@@ -1,7 +1,8 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { Store } from '../types/store';
 import { getDistanceKm, formatDistance } from '../utils/geo';
-import { getIndustryEmoji } from '../utils/industry';
+import { getIndustryCategory } from '../utils/industry';
+import IndustryIcon from '../components/IndustryIcon';
 
 interface MapPageProps {
   stores: Store[];
@@ -189,7 +190,7 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
           onKeyDown={(e) => { if (e.key === 'Enter') onStoreSelect(selectedStore); }}
         >
           <div style={styles.miniCardContent}>
-            <span style={styles.emoji}>{getIndustryEmoji(selectedStore.industryName)}</span>
+            <IndustryIcon category={getIndustryCategory(selectedStore.industryName)} size={32} />
             <div style={styles.miniCardInfo}>
               <div style={styles.storeName}>{selectedStore.storeName}</div>
               <div style={styles.industryType}>{selectedStore.industryName.split('/')[0]}</div>
@@ -230,7 +231,7 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: '0 4px 16px rgba(0,0,0,0.15)', padding: 16, cursor: 'pointer', zIndex: 5,
   },
   miniCardContent: { display: 'flex', alignItems: 'center', gap: 12 },
-  emoji: { fontSize: 32, flexShrink: 0 },
+  emoji: { fontSize: 32, flexShrink: 0 }, // kept for reference; IndustryIcon now handles sizing
   miniCardInfo: { flex: 1, minWidth: 0 },
   storeName: { fontSize: 16, fontWeight: 700, color: '#1a1a1a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
   industryType: { fontSize: 13, color: '#1a73e8', marginTop: 2 },

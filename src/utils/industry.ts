@@ -25,6 +25,19 @@ export function getCategoryFromIndustry(industryName: string): string {
   return '기타';
 }
 
+/**
+ * Returns the category string for a given industry name.
+ * Use this with the IndustryIcon component.
+ */
+export function getIndustryCategory(industryName: string): string {
+  return getCategoryFromIndustry(industryName);
+}
+
+/**
+ * @deprecated Use IndustryIcon component with getIndustryCategory() instead.
+ * Emoji icons render differently across platforms (Android WebView, iOS, web).
+ * Kept for backwards compatibility.
+ */
 export function getIndustryEmoji(industryName: string): string {
   const category = getCategoryFromIndustry(industryName);
   const emojiMap: Record<string, string> = {

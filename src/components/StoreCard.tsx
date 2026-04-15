@@ -1,6 +1,7 @@
 import React from 'react';
 import { Store } from '../types/store';
-import { getIndustryEmoji } from '../utils/industry';
+import { getIndustryCategory } from '../utils/industry';
+import IndustryIcon from './IndustryIcon';
 
 interface StoreCardProps {
   store: Store;
@@ -31,10 +32,8 @@ const StoreCard: React.FC<StoreCardProps> = ({
         cursor: 'pointer',
       }}
     >
-      {/* Industry emoji */}
-      <span style={{ fontSize: 28, flexShrink: 0, lineHeight: 1 }}>
-        {getIndustryEmoji(store.industryName)}
-      </span>
+      {/* Industry icon */}
+      <IndustryIcon category={getIndustryCategory(store.industryName)} size={24} />
 
       {/* Store info */}
       <div style={{ flex: 1, minWidth: 0 }}>
