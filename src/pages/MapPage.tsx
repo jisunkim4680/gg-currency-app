@@ -10,8 +10,8 @@ interface MapPageProps {
   loading: boolean;
 }
 
-const DEFAULT_CENTER = { lat: 37.2636, lng: 127.0286 }; // 수원시 중심
-const DEFAULT_LEVEL = 5;
+const DEFAULT_CENTER = { lat: 37.4138, lng: 127.0286 };
+const DEFAULT_LEVEL = 7;
 const MAX_MARKERS = 200;
 
 export default function MapPage({ stores, userLocation, onStoreSelect, loading }: MapPageProps) {
@@ -22,6 +22,7 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [visibleCount, setVisibleCount] = useState(0);
   const updateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const prevStoresLenRef = useRef(0);
 
   storesRef.current = stores;
 
@@ -30,7 +31,6 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
     const map = mapRef.current;
     if (!map) return;
 
-    // 기존 마커 제거
     markersRef.current.forEach((m) => m.setMap(null));
     markersRef.current = [];
 
@@ -39,33 +39,26 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
 
     const sw = bounds.getSouthWest();
     const ne = bounds.getNorthEast();
-    const swLat = sw.getLat();
-    const swLng = sw.getLng();
-    const neLat = ne.getLat();
-    const neLng = ne.getLng();
 
-    // 현재 보이는 영역의 가맹점 필터
     const visible = storesRef.current.filter(
-      (s) => s.lat >= swLat && s.lat <= neLat && s.lng >= swLng && s.lng <= neLng
+      (s) => s.lat >= sw.getLat() && s.lat <= ne.getLat() && s.lng >= sw.getLng() && s.lng <= ne.getLng()
     );
 
-    // 최대 200개만 마커 생성
     const toShow = visible.slice(0, MAX_MARKERS);
     setVisibleCount(visible.length);
 
     const newMarkers = toShow.map((store) => {
-      const position = new kakao.maps.LatLng(store.lat, store.lng);
-      const marker = new kakao.maps.Marker({ position, map });
-      kakao.maps.event.addListener(marker, 'click', () => {
-        setSelectedStore(store);
+      const marker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(store.lat, store.lng),
+        map,
       });
+      kakao.maps.event.addListener(marker, 'click', () => setSelectedStore(store));
       return marker;
     });
 
     markersRef.current = newMarkers;
   }, []);
 
-  // 지도 이동/줌 시 디바운스로 마커 업데이트
   const scheduleUpdate = useCallback(() => {
     if (updateTimerRef.current) clearTimeout(updateTimerRef.current);
     updateTimerRef.current = setTimeout(updateVisibleMarkers, 300);
@@ -80,16 +73,10 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
         ? new kakao.maps.LatLng(userLocation.lat, userLocation.lng)
         : new kakao.maps.LatLng(DEFAULT_CENTER.lat, DEFAULT_CENTER.lng);
 
-      const map = new kakao.maps.Map(mapContainerRef.current!, {
-        center,
-        level: DEFAULT_LEVEL,
-      });
+      const map = new kakao.maps.Map(mapContainerRef.current!, { center, level: DEFAULT_LEVEL });
       mapRef.current = map;
 
-      // 지도 이동/줌 이벤트
       kakao.maps.event.addListener(map, 'idle', scheduleUpdate);
-
-      // 초기 마커 표시
       setTimeout(updateVisibleMarkers, 500);
     };
 
@@ -98,9 +85,39 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
     }
   }, []);
 
-  // stores 변경 시 마커 갱신
+  // stores 변경 시 → 해당 지역으로 지도 이동 + 마커 갱신
   useEffect(() => {
-    updateVisibleMarkers();
+    const map = mapRef.current;
+    if (!map || stores.length === 0) {
+      updateVisibleMarkers();
+      return;
+    }
+
+    // 필터된 가맹점들의 중심 좌표 계산
+    const validStores = stores.filter((s) => s.lat && s.lng);
+    if (validStores.length === 0) return;
+
+    // 가맹점 영역으로 지도 이동
+    if (validStores.length <= 500) {
+      // 소규모: bounds로 딱 맞게
+      const bounds = new kakao.maps.LatLngBounds();
+      validStores.forEach((s) => bounds.extend(new kakao.maps.LatLng(s.lat, s.lng)));
+      map.setBounds(bounds);
+    } else {
+      // 대규모: 중심점 + 적절한 줌
+      let sumLat = 0, sumLng = 0;
+      for (const s of validStores) {
+        sumLat += s.lat;
+        sumLng += s.lng;
+      }
+      const centerLat = sumLat / validStores.length;
+      const centerLng = sumLng / validStores.length;
+      map.setCenter(new kakao.maps.LatLng(centerLat, centerLng));
+      map.setLevel(validStores.length > 5000 ? 7 : 5);
+    }
+
+    setTimeout(updateVisibleMarkers, 400);
+    prevStoresLenRef.current = stores.length;
   }, [stores, updateVisibleMarkers]);
 
   const handleCenterOnUser = useCallback(() => {
@@ -124,11 +141,12 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
         </div>
       )}
 
-      {/* 표시 정보 */}
       <div style={styles.infoBar}>
         {stores.length > 0 && (
           <span>
-            📍 {visibleCount > MAX_MARKERS ? `${MAX_MARKERS}/${visibleCount.toLocaleString()}개 표시` : `${visibleCount.toLocaleString()}개`}
+            📍 {visibleCount > MAX_MARKERS
+              ? `${MAX_MARKERS}/${visibleCount.toLocaleString()}개 표시`
+              : `${visibleCount.toLocaleString()}개`}
             {stores.length > visibleCount && ` (전체 ${stores.length.toLocaleString()}개)`}
           </span>
         )}
