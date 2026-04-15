@@ -21,9 +21,7 @@ const ListPage: React.FC<ListPageProps> = ({
   favorites,
   loading,
 }) => {
-  const [sortType, setSortType] = useState<SortType>(
-    userLocation ? 'distance' : 'name'
-  );
+  const [sortType, setSortType] = useState<SortType>('distance');
   const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -32,12 +30,7 @@ const ListPage: React.FC<ListPageProps> = ({
     setDisplayCount(PAGE_SIZE);
   }, [stores]);
 
-  // Update sort type when userLocation becomes available
-  useEffect(() => {
-    if (userLocation) {
-      setSortType('distance');
-    }
-  }, [userLocation]);
+  // userLocation 변경 시 거리 재계산 트리거 (sortType은 항상 distance 기본)
 
   // Calculate distances and sort
   const storesWithDistance = useMemo(() => {
@@ -116,7 +109,7 @@ const ListPage: React.FC<ListPageProps> = ({
             fontWeight: 500,
           }}
         >
-          {userLocation && <option value="distance">거리순</option>}
+          <option value="distance">거리순</option>
           <option value="name">이름순</option>
         </select>
       </div>
