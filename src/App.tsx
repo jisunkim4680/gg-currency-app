@@ -128,14 +128,13 @@ function App() {
         )}
       </div>
 
-      {dataSource !== 'api' && dataSource && (
+      {dataSource === 'static' && (
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0,
-          background: dataSource === 'cache' ? '#fff3e0' : '#ffebee',
-          color: dataSource === 'cache' ? '#e65100' : '#c62828',
+          background: '#ffebee', color: '#c62828',
           fontSize: 11, textAlign: 'center', padding: '4px 8px', zIndex: 1000,
         }}>
-          {dataSource === 'cache' ? '📦 캐시 데이터입니다' : '📂 정적 데이터입니다'}
+          📂 오프라인 데이터입니다 · 인터넷 연결을 확인해주세요
         </div>
       )}
 
