@@ -198,13 +198,13 @@ const styles: Record<string, React.CSSProperties> = {
     zIndex: 5, boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
   },
   locationButton: {
-    position: 'absolute', bottom: 100, right: 16, width: 48, height: 48,
+    position: 'absolute', bottom: 150, right: 16, width: 48, height: 48,
     borderRadius: '50%', backgroundColor: '#fff', border: 'none',
     boxShadow: '0 2px 8px rgba(0,0,0,0.2)', fontSize: 22, cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 5,
   },
   miniCard: {
-    position: 'absolute', bottom: 16, left: 16, right: 16,
+    position: 'absolute', bottom: 70, left: 16, right: 16,
     backgroundColor: '#fff', borderRadius: 16,
     boxShadow: '0 4px 16px rgba(0,0,0,0.15)', padding: 16, cursor: 'pointer', zIndex: 5,
   },
