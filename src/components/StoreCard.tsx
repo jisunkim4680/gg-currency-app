@@ -27,10 +27,9 @@ const StoreCard: React.FC<StoreCardProps> = ({
         gap: 12,
         padding: 16,
         backgroundColor: '#ffffff',
-        borderRadius: 20,
-        boxShadow: 'rgba(0,0,0,0.02) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 6px, rgba(0,0,0,0.1) 0px 4px 8px',
+        borderRadius: 0,
+        borderBottom: '1px solid #f0f0f0',
         cursor: 'pointer',
-        transition: 'box-shadow 0.2s ease',
       }}
     >
       {/* Industry icon */}
@@ -40,9 +39,9 @@ const StoreCard: React.FC<StoreCardProps> = ({
       <div style={{ flex: 1, minWidth: 0 }}>
         <div
           style={{
-            fontSize: 16,
+            fontSize: 15,
             fontWeight: 600,
-            color: '#222222',
+            color: '#1e1e1e',
             marginBottom: 4,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -52,13 +51,13 @@ const StoreCard: React.FC<StoreCardProps> = ({
         >
           {store.storeName}
         </div>
-        <div style={{ fontSize: 14, color: '#6a6a6a', fontWeight: 400, marginBottom: 2 }}>
+        <div style={{ fontSize: 13, color: '#808080', fontWeight: 400, marginBottom: 2 }}>
           {store.industryName}
         </div>
         <div
           style={{
-            fontSize: 14,
-            color: '#6a6a6a',
+            fontSize: 13,
+            color: '#808080',
             fontWeight: 400,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -68,7 +67,7 @@ const StoreCard: React.FC<StoreCardProps> = ({
           {store.roadAddress || store.lotAddress}
         </div>
         {distance && (
-          <div style={{ fontSize: 13, color: '#222222', fontWeight: 500, marginTop: 4 }}>
+          <div style={{ fontSize: 13, color: '#1e1e1e', fontWeight: 500, marginTop: 4 }}>
             {distance}
           </div>
         )}
@@ -97,8 +96,8 @@ const StoreCard: React.FC<StoreCardProps> = ({
           width="22"
           height="22"
           viewBox="0 0 24 24"
-          fill={isFavorite ? '#ff385c' : 'none'}
-          stroke={isFavorite ? '#ff385c' : '#222222'}
+          fill={isFavorite ? '#ff3b30' : 'none'}
+          stroke={isFavorite ? '#ff3b30' : '#b2b2b2'}
           strokeWidth="1.8"
           strokeLinecap="round"
           strokeLinejoin="round"

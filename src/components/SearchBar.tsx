@@ -42,6 +42,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setTimeout(() => setIsFocused(false), 200);
   };
 
+  const handleSearchClick = () => {
+    if (value.trim()) {
+      onSearch(value.trim());
+      setIsFocused(false);
+      inputRef.current?.blur();
+    }
+  };
+
   return (
     <div ref={containerRef} style={{ position: 'relative', padding: '8px 16px' }}>
       <div
@@ -49,19 +57,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
           display: 'flex',
           alignItems: 'center',
           backgroundColor: '#ffffff',
-          borderRadius: 32,
-          padding: '12px 20px',
-          gap: 10,
-          boxShadow: isFocused
-            ? 'rgba(0,0,0,0.02) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 6px, rgba(0,0,0,0.1) 0px 4px 8px, 0 0 0 2px rgba(255,56,92,0.2)'
-            : 'rgba(0,0,0,0.02) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 6px, rgba(0,0,0,0.1) 0px 4px 8px',
-          transition: 'box-shadow 0.2s ease',
+          borderRadius: 8,
+          border: isFocused ? '1px solid #03C75A' : '1px solid #e5e5e5',
+          padding: '0 0 0 12px',
+          gap: 0,
+          transition: 'border-color 0.2s ease',
+          overflow: 'hidden',
         }}
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
         <input
           ref={inputRef}
           type="text"
@@ -77,8 +80,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
             background: 'none',
             outline: 'none',
             fontSize: 14,
-            fontWeight: 500,
-            color: '#222222',
+            fontWeight: 400,
+            color: '#1e1e1e',
+            padding: '10px 0',
           }}
         />
         {value && (
@@ -86,7 +90,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             onClick={() => onChange('')}
             style={{
               border: 'none',
-              background: '#f2f2f2',
+              background: '#f5f6f8',
               cursor: 'pointer',
               width: 20,
               height: 20,
@@ -95,14 +99,35 @@ const SearchBar: React.FC<SearchBarProps> = ({
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 11,
-              color: '#6a6a6a',
+              color: '#808080',
               padding: 0,
               flexShrink: 0,
+              marginRight: 8,
             }}
           >
             ✕
           </button>
         )}
+        {/* Green search button on right */}
+        <button
+          onClick={handleSearchClick}
+          style={{
+            width: 40,
+            height: 40,
+            backgroundColor: '#03C75A',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </button>
       </div>
 
       {showDropdown && (
@@ -113,13 +138,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
             left: 16,
             right: 16,
             backgroundColor: '#ffffff',
-            borderRadius: 20,
-            boxShadow: 'rgba(0,0,0,0.02) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 6px, rgba(0,0,0,0.1) 0px 4px 8px',
+            borderRadius: 8,
+            border: '1px solid #e5e5e5',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
             zIndex: 100,
             maxHeight: 300,
             overflowY: 'auto',
             marginTop: 4,
-            padding: '8px 0',
+            padding: '4px 0',
           }}
         >
           {recentSearches.map((query) => (
@@ -129,17 +155,17 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '10px 20px',
+                padding: '10px 16px',
                 cursor: 'pointer',
               }}
               onClick={() => handleRecentClick(query)}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#808080" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10" />
                   <polyline points="12 6 12 12 16 14" />
                 </svg>
-                <span style={{ fontSize: 14, color: '#222222' }}>{query}</span>
+                <span style={{ fontSize: 14, color: '#1e1e1e' }}>{query}</span>
               </div>
               <button
                 onClick={(e) => {
@@ -151,7 +177,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                   background: 'none',
                   cursor: 'pointer',
                   fontSize: 13,
-                  color: '#b0b0b0',
+                  color: '#b2b2b2',
                   padding: '0 4px',
                 }}
               >
@@ -169,9 +195,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
               border: 'none',
               background: 'none',
               cursor: 'pointer',
-              padding: '10px 20px',
+              padding: '10px 16px',
               fontSize: 13,
-              color: '#6a6a6a',
+              color: '#808080',
               textAlign: 'center',
               fontWeight: 500,
             }}

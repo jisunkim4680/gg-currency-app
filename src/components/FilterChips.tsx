@@ -45,14 +45,14 @@ const FilterChips: React.FC<FilterChipsProps> = ({
   const locationChipStyle = (isSelected: boolean): React.CSSProperties => ({
     display: 'inline-flex',
     alignItems: 'center',
-    padding: '8px 16px',
-    borderRadius: 32,
-    border: isSelected ? '1px solid #222222' : '1px solid #dddddd',
+    padding: '6px 14px',
+    borderRadius: 20,
+    border: isSelected ? '1px solid #03C75A' : '1px solid #e5e5e5',
     cursor: 'pointer',
     fontSize: 13,
     fontWeight: isSelected ? 600 : 400,
-    backgroundColor: isSelected ? '#222222' : '#f2f2f2',
-    color: isSelected ? '#ffffff' : '#222222',
+    backgroundColor: isSelected ? '#03C75A' : '#ffffff',
+    color: isSelected ? '#ffffff' : '#1e1e1e',
     whiteSpace: 'nowrap',
     flexShrink: 0,
     gap: 4,
@@ -62,14 +62,14 @@ const FilterChips: React.FC<FilterChipsProps> = ({
   const subChipStyle = (isSelected: boolean): React.CSSProperties => ({
     display: 'inline-flex',
     alignItems: 'center',
-    padding: '8px 16px',
-    borderRadius: 32,
-    border: isSelected ? '1px solid #222222' : '1px solid #dddddd',
+    padding: '6px 14px',
+    borderRadius: 20,
+    border: isSelected ? '1px solid #03C75A' : '1px solid #e5e5e5',
     cursor: 'pointer',
     fontSize: 13,
     fontWeight: isSelected ? 600 : 400,
-    backgroundColor: isSelected ? '#f7f7f7' : '#f2f2f2',
-    color: isSelected ? '#222222' : '#6a6a6a',
+    backgroundColor: isSelected ? '#e8f8ef' : '#ffffff',
+    color: isSelected ? '#03C75A' : '#808080',
     whiteSpace: 'nowrap',
     flexShrink: 0,
     gap: 4,
@@ -78,7 +78,7 @@ const FilterChips: React.FC<FilterChipsProps> = ({
 
   return (
     <>
-      {/* 1행: 시군 + 구 + 동 */}
+      {/* 1행: 시군 + 구 + 동 + 업종 (horizontal scroll, pill chips) */}
       <div style={{
         display: 'flex', gap: 8, padding: '8px 16px 4px',
         overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none',
@@ -119,9 +119,9 @@ const FilterChips: React.FC<FilterChipsProps> = ({
         )}
       </div>
 
-      {/* 2행: 업종 필터 - Airbnb category style with icon on top */}
+      {/* 2행: 업종 필터 - horizontal pill chips (Naver style) */}
       <div style={{
-        display: 'flex', gap: 16, padding: '8px 16px 12px',
+        display: 'flex', gap: 8, padding: '8px 16px 12px',
         overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none',
       }}>
         {CATEGORIES.map((category) => {
@@ -130,26 +130,24 @@ const FilterChips: React.FC<FilterChipsProps> = ({
             <button
               key={category.label}
               style={{
-                display: 'flex',
-                flexDirection: 'column',
+                display: 'inline-flex',
                 alignItems: 'center',
                 gap: 4,
-                padding: '8px 4px 10px',
-                border: 'none',
-                background: 'none',
+                padding: '6px 14px',
+                borderRadius: 20,
+                border: isSelected ? '1px solid #03C75A' : '1px solid #e5e5e5',
+                backgroundColor: isSelected ? '#03C75A' : '#ffffff',
+                color: isSelected ? '#ffffff' : '#1e1e1e',
                 cursor: 'pointer',
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: isSelected ? 600 : 400,
-                color: isSelected ? '#222222' : '#6a6a6a',
                 whiteSpace: 'nowrap',
                 flexShrink: 0,
-                borderBottom: isSelected ? '2px solid #222222' : '2px solid transparent',
                 transition: 'all 0.15s ease',
-                minWidth: 48,
               }}
               onClick={() => onCategoryChange(isSelected ? null : category.label)}
             >
-              <span style={{ fontSize: 20 }}>{category.icon}</span>
+              <span style={{ fontSize: 14 }}>{category.icon}</span>
               <span>{category.label}</span>
             </button>
           );
@@ -225,12 +223,12 @@ function SelectModal({
     >
       <div
         style={{
-          backgroundColor: '#fff', borderRadius: 20, padding: 24,
+          backgroundColor: '#fff', borderRadius: 16, padding: 24,
           width: '85%', maxWidth: 360, maxHeight: '70vh', overflowY: 'auto',
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 style={{ margin: '0 0 20px', fontSize: 18, fontWeight: 600, color: '#222222', letterSpacing: '-0.2px' }}>{title}</h3>
+        <h3 style={{ margin: '0 0 20px', fontSize: 18, fontWeight: 700, color: '#1e1e1e', letterSpacing: '-0.2px' }}>{title}</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
           {items.map((item) => (
             <button
@@ -238,9 +236,9 @@ function SelectModal({
               onClick={() => onSelect(item)}
               style={{
                 padding: '12px 4px', borderRadius: 8,
-                border: selected === item ? '2px solid #222222' : '1px solid #dddddd',
-                backgroundColor: selected === item ? '#f7f7f7' : '#fff',
-                color: selected === item ? '#222222' : '#222222',
+                border: selected === item ? '2px solid #03C75A' : '1px solid #e5e5e5',
+                backgroundColor: selected === item ? '#e8f8ef' : '#fff',
+                color: selected === item ? '#03C75A' : '#1e1e1e',
                 fontWeight: selected === item ? 600 : 400,
                 cursor: 'pointer', fontSize: 13,
                 transition: 'all 0.15s ease',

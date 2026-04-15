@@ -78,40 +78,53 @@ const ListPage: React.FC<ListPageProps> = ({
   const totalCount = stores.length.toLocaleString();
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#ffffff' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#f5f6f8' }}>
       {/* Top bar */}
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '14px 16px',
-          borderBottom: '1px solid #ebebeb',
+          padding: '12px 16px',
+          borderBottom: '1px solid #e5e5e5',
           backgroundColor: '#fff',
           flexShrink: 0,
         }}
       >
-        <span style={{ fontSize: 14, fontWeight: 600, color: '#222222' }}>
+        <span style={{ fontSize: 13, fontWeight: 600, color: '#1e1e1e' }}>
           {totalCount}건
         </span>
-        <select
-          value={sortType}
-          onChange={(e) => setSortType(e.target.value as SortType)}
-          style={{
-            fontSize: 13,
-            padding: '6px 10px',
-            border: '1px solid #dddddd',
-            borderRadius: 8,
-            backgroundColor: '#fff',
-            color: '#222222',
-            cursor: 'pointer',
-            outline: 'none',
-            fontWeight: 500,
-          }}
-        >
-          <option value="distance">거리순</option>
-          <option value="name">이름순</option>
-        </select>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <button
+            onClick={() => setSortType('distance')}
+            style={{
+              fontSize: 13,
+              padding: '4px 0',
+              border: 'none',
+              background: 'none',
+              color: sortType === 'distance' ? '#03C75A' : '#808080',
+              cursor: 'pointer',
+              fontWeight: sortType === 'distance' ? 600 : 400,
+            }}
+          >
+            거리순
+          </button>
+          <span style={{ color: '#e5e5e5', fontSize: 12 }}>|</span>
+          <button
+            onClick={() => setSortType('name')}
+            style={{
+              fontSize: 13,
+              padding: '4px 0',
+              border: 'none',
+              background: 'none',
+              color: sortType === 'name' ? '#03C75A' : '#808080',
+              cursor: 'pointer',
+              fontWeight: sortType === 'name' ? 600 : 400,
+            }}
+          >
+            이름순
+          </button>
+        </div>
       </div>
 
       {/* Scrollable list */}
@@ -121,11 +134,11 @@ const ListPage: React.FC<ListPageProps> = ({
         style={{
           flex: 1,
           overflowY: 'auto',
-          padding: '12px 16px',
+          padding: 0,
           display: 'flex',
           flexDirection: 'column',
-          gap: 16,
-          backgroundColor: '#f7f7f7',
+          gap: 0,
+          backgroundColor: '#ffffff',
         }}
       >
         {loading ? (
@@ -141,8 +154,8 @@ const ListPage: React.FC<ListPageProps> = ({
               style={{
                 width: 32,
                 height: 32,
-                border: '3px solid #ebebeb',
-                borderTop: '3px solid #ff385c',
+                border: '3px solid #e5e5e5',
+                borderTop: '3px solid #03C75A',
                 borderRadius: '50%',
                 animation: 'spin 0.8s linear infinite',
               }}
@@ -156,17 +169,17 @@ const ListPage: React.FC<ListPageProps> = ({
               alignItems: 'center',
               justifyContent: 'center',
               padding: '60px 20px',
-              color: '#6a6a6a',
+              color: '#808080',
             }}
           >
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#b0b0b0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 16 }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#b2b2b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 16 }}>
               <circle cx="11" cy="11" r="8" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
-            <span style={{ fontSize: 16, fontWeight: 600, color: '#222222', marginBottom: 4 }}>
+            <span style={{ fontSize: 15, fontWeight: 600, color: '#1e1e1e', marginBottom: 4 }}>
               검색 결과가 없습니다
             </span>
-            <span style={{ fontSize: 14, color: '#6a6a6a' }}>
+            <span style={{ fontSize: 13, color: '#808080' }}>
               다른 검색어나 필터를 시도해보세요
             </span>
           </div>
@@ -193,9 +206,9 @@ const ListPage: React.FC<ListPageProps> = ({
                 style={{
                   textAlign: 'center',
                   padding: '16px 0',
-                  color: '#6a6a6a',
+                  color: '#808080',
                   fontSize: 13,
-                  fontWeight: 500,
+                  fontWeight: 400,
                 }}
               >
                 스크롤하여 더 보기...

@@ -48,7 +48,7 @@ const TabBar: React.FC<TabBarProps> = ({ activeTab, onTabChange }) => {
         right: 0,
         height: 56,
         backgroundColor: '#ffffff',
-        boxShadow: '0 -1px 0 rgba(0, 0, 0, 0.08)',
+        borderTop: '1px solid #e5e5e5',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-around',
@@ -57,7 +57,7 @@ const TabBar: React.FC<TabBarProps> = ({ activeTab, onTabChange }) => {
     >
       {tabs.map((tab) => {
         const isActive = activeTab === tab.key;
-        const color = isActive ? '#ff385c' : '#6a6a6a';
+        const color = isActive ? '#03C75A' : '#808080';
         return (
           <button
             key={tab.key}
@@ -74,13 +74,29 @@ const TabBar: React.FC<TabBarProps> = ({ activeTab, onTabChange }) => {
               background: 'none',
               cursor: 'pointer',
               color,
-              fontWeight: 500,
+              fontWeight: isActive ? 600 : 400,
               fontSize: 10,
               padding: 0,
               letterSpacing: '0.02em',
+              position: 'relative',
             }}
           >
-            <tab.Icon color={color} />
+            {/* Green dot indicator above icon for active tab */}
+            {isActive && (
+              <div
+                style={{
+                  width: 5,
+                  height: 5,
+                  borderRadius: '50%',
+                  backgroundColor: '#03C75A',
+                  position: 'absolute',
+                  top: 6,
+                }}
+              />
+            )}
+            <div style={{ marginTop: isActive ? 8 : 0 }}>
+              <tab.Icon color={color} />
+            </div>
             <span>{tab.label}</span>
           </button>
         );
