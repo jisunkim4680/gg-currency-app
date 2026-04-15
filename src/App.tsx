@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import './index.css';
 import MapPage from './pages/MapPage';
 import ListPage from './pages/ListPage';
@@ -11,6 +11,7 @@ import { useStores } from './hooks/useStores';
 import { useLocation } from './hooks/useLocation';
 import { useFavorites } from './hooks/useFavorites';
 import { useRecentSearches } from './hooks/useRecentSearches';
+import { getGuList, getDongList, filterByAddress } from './utils/address';
 import type { Store } from './types/store';
 
 export type TabType = 'map' | 'list' | 'favorites';
@@ -19,6 +20,8 @@ function App() {
   const [activeTab, setActiveTab] = useState<TabType>('map');
   const [selectedSigun, setSelectedSigun] = useState<string>('수원시');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedGu, setSelectedGu] = useState<string | null>(null);
+  const [selectedDong, setSelectedDong] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
 
@@ -27,29 +30,46 @@ function App() {
   const favorites = useFavorites();
   const recentSearches = useRecentSearches();
 
-  const filteredStores = stores.filter((store) => {
+  // 구/동 목록 추출
+  const guList = useMemo(() => getGuList(stores), [stores]);
+  const dongList = useMemo(() => getDongList(stores, selectedGu), [stores, selectedGu]);
+
+  const filteredStores = useMemo(() => {
+    // 1. 구/동 필터
+    let result = filterByAddress(stores, selectedGu, selectedDong);
+
+    // 2. 업종 필터
     if (selectedCategory) {
-      const mainType = store.industryName.split('/')[0];
-      if (!mainType.includes(selectedCategory)) return false;
+      result = result.filter((store) => {
+        const mainType = store.industryName.split('/')[0];
+        return mainType.includes(selectedCategory);
+      });
     }
+
+    // 3. 검색어 필터
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      if (
-        !store.storeName.toLowerCase().includes(q) &&
-        !store.industryName.toLowerCase().includes(q) &&
-        !store.roadAddress.toLowerCase().includes(q)
-      ) {
-        return false;
-      }
+      result = result.filter((store) =>
+        store.storeName.toLowerCase().includes(q) ||
+        store.industryName.toLowerCase().includes(q) ||
+        store.roadAddress.toLowerCase().includes(q)
+      );
     }
-    return true;
-  });
+
+    return result;
+  }, [stores, selectedGu, selectedDong, selectedCategory, searchQuery]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     if (query.trim()) {
       recentSearches.add(query.trim());
     }
+  };
+
+  const handleSigunChange = (sigun: string) => {
+    setSelectedSigun(sigun);
+    setSelectedGu(null);
+    setSelectedDong(null);
   };
 
   return (
@@ -66,9 +86,15 @@ function App() {
           />
           <FilterChips
             selectedSigun={selectedSigun}
-            onSigunChange={setSelectedSigun}
+            onSigunChange={handleSigunChange}
             selectedCategory={selectedCategory}
             onCategoryChange={setSelectedCategory}
+            guList={guList}
+            dongList={dongList}
+            selectedGu={selectedGu}
+            onGuChange={setSelectedGu}
+            selectedDong={selectedDong}
+            onDongChange={setSelectedDong}
           />
         </>
       )}
@@ -95,9 +121,8 @@ function App() {
           <FavoritesPage
             favorites={favorites}
             onStoreSelect={setSelectedStore}
-            onViewOnMap={(stores) => {
+            onViewOnMap={() => {
               setActiveTab('map');
-              // TODO: 폴더 가맹점 지도 보기
             }}
           />
         )}
@@ -105,18 +130,12 @@ function App() {
 
       {dataSource !== 'api' && dataSource && (
         <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
+          position: 'absolute', top: 0, left: 0, right: 0,
           background: dataSource === 'cache' ? '#fff3e0' : '#ffebee',
           color: dataSource === 'cache' ? '#e65100' : '#c62828',
-          fontSize: 11,
-          textAlign: 'center',
-          padding: '4px 8px',
-          zIndex: 1000,
+          fontSize: 11, textAlign: 'center', padding: '4px 8px', zIndex: 1000,
         }}>
-          {dataSource === 'cache' ? '📦 캐시 데이터입니다 (오프라인)' : '📂 정적 데이터입니다'}
+          {dataSource === 'cache' ? '📦 캐시 데이터입니다' : '📂 정적 데이터입니다'}
         </div>
       )}
 
