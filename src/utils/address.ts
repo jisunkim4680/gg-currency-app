@@ -1,11 +1,11 @@
 import { Store } from '../types/store';
 
 export interface AddressParts {
-  gu: string;   // 구/군 (예: 영통구, 권선구)
-  dong: string; // 동/읍/면 (예: 신동, 매탄동)
+  gu: string;
+  dong: string;
 }
 
-// 주소에서 구/동 정보 추출
+// 주소에서 구/동 정보 추출 (시군명 바로 뒤의 구만 인식)
 export function parseAddress(store: Store): AddressParts {
   const addr = store.roadAddress || store.lotAddress || '';
   const parts = addr.split(' ');
@@ -13,24 +13,34 @@ export function parseAddress(store: Store): AddressParts {
   let gu = '';
   let dong = '';
 
-  for (const part of parts) {
-    if (part.endsWith('구') || part.endsWith('군')) {
-      if (part !== store.sigunName) {
-        gu = part;
-      }
+  // 시군명의 위치를 찾고, 그 바로 다음이 구/군인지 확인
+  const sigunIdx = parts.findIndex((p) => p === store.sigunName);
+
+  if (sigunIdx >= 0 && sigunIdx + 1 < parts.length) {
+    const nextPart = parts[sigunIdx + 1];
+    // 시군명 바로 뒤에 오는 것만 구로 인식
+    if (nextPart.endsWith('구') || nextPart.endsWith('군')) {
+      gu = nextPart;
     }
+  }
+
+  // 동/읍/면 추출: 구 뒤에 오는 것, 또는 시군명 뒤에 오는 것
+  const startIdx = gu ? sigunIdx + 2 : sigunIdx + 1;
+  for (let i = startIdx; i < parts.length; i++) {
+    const part = parts[i];
     if (part.endsWith('동') || part.endsWith('읍') || part.endsWith('면')) {
-      // 첫 번째로 나오는 동/읍/면만 사용 (번지 앞)
-      if (!dong && !part.includes('번')) {
+      if (!part.includes('번')) {
         dong = part;
+        break;
       }
     }
+    // 도로명이 나오면 중단 (동 정보는 그 전에 나옴)
+    if (part.endsWith('로') || part.endsWith('길')) break;
   }
 
   return { gu, dong };
 }
 
-// 가맹점 목록에서 구 목록 추출
 export function getGuList(stores: Store[]): string[] {
   const guSet = new Set<string>();
   for (const store of stores) {
@@ -40,7 +50,6 @@ export function getGuList(stores: Store[]): string[] {
   return Array.from(guSet).sort();
 }
 
-// 가맹점 목록에서 동 목록 추출 (선택된 구 기준)
 export function getDongList(stores: Store[], selectedGu: string | null): string[] {
   const dongSet = new Set<string>();
   for (const store of stores) {
@@ -51,7 +60,6 @@ export function getDongList(stores: Store[], selectedGu: string | null): string[
   return Array.from(dongSet).sort();
 }
 
-// 구/동 필터 적용
 export function filterByAddress(
   stores: Store[],
   selectedGu: string | null,
