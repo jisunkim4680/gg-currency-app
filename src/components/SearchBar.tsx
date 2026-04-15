@@ -70,7 +70,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           onFocus={() => setIsFocused(true)}
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
-          placeholder="가맹점 검색"
+          placeholder="가맹점명, 주소, 업종으로 검색"
           style={{
             flex: 1,
             border: 'none',
