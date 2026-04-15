@@ -157,27 +157,30 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
       <div style={styles.infoBar}>
         {stores.length > 0 && visibleCount > 0 && (
           <span>
-            📍 {visibleCount > MAX_MARKERS
+            {visibleCount > MAX_MARKERS
               ? `${MAX_MARKERS}/${visibleCount.toLocaleString()}개 표시`
               : `${visibleCount.toLocaleString()}개`}
             {stores.length > visibleCount && ` (전체 ${stores.length.toLocaleString()}개)`}
           </span>
         )}
         {isOutOfBounds && !loading && (
-          <span>📍 경기도 밖입니다 · 지역 필터를 선택해주세요</span>
+          <span>경기도 밖입니다 -- 지역 필터를 선택해주세요</span>
         )}
         {!isOutOfBounds && stores.length > 0 && visibleCount === 0 && !loading && (
-          <span>📍 조건에 맞는 가맹점이 없습니다 · 지도를 이동하거나 필터를 변경해보세요</span>
+          <span>조건에 맞는 가맹점이 없습니다 -- 지도를 이동하거나 필터를 변경해보세요</span>
         )}
         {stores.length === 0 && !loading && (
-          <span>🔍 조건에 맞는 가맹점이 없습니다</span>
+          <span>조건에 맞는 가맹점이 없습니다</span>
         )}
-        {loading && <span>⏳ 로딩 중...</span>}
+        {loading && <span>로딩 중...</span>}
       </div>
 
       {userLocation && (
         <button style={styles.locationButton} onClick={handleCenterOnUser} aria-label="내 위치로 이동">
-          🎯
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
+          </svg>
         </button>
       )}
 
@@ -212,29 +215,30 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     backgroundColor: 'rgba(255,255,255,0.6)', zIndex: 10, pointerEvents: 'none',
   },
-  spinner: { width: 40, height: 40, border: '4px solid #e0e0e0', borderTopColor: '#1a73e8', borderRadius: '50%', animation: 'spin 0.8s linear infinite' },
+  spinner: { width: 40, height: 40, border: '4px solid #ebebeb', borderTopColor: '#ff385c', borderRadius: '50%', animation: 'spin 0.8s linear infinite' },
   infoBar: {
     position: 'absolute', top: 8, left: 8, right: 8,
-    backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 8,
-    padding: '6px 12px', fontSize: 12, color: '#666',
-    zIndex: 5, boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
+    backgroundColor: 'rgba(255,255,255,0.95)', borderRadius: 20,
+    padding: '8px 16px', fontSize: 13, color: '#222222', fontWeight: 500,
+    zIndex: 5, boxShadow: 'rgba(0,0,0,0.02) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 6px, rgba(0,0,0,0.1) 0px 4px 8px',
   },
   locationButton: {
     position: 'absolute', bottom: 150, right: 16, width: 48, height: 48,
     borderRadius: '50%', backgroundColor: '#fff', border: 'none',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.2)', fontSize: 22, cursor: 'pointer',
+    boxShadow: 'rgba(0,0,0,0.02) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 6px, rgba(0,0,0,0.1) 0px 4px 8px',
+    cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 5,
   },
   miniCard: {
     position: 'absolute', bottom: 70, left: 16, right: 16,
-    backgroundColor: '#fff', borderRadius: 16,
-    boxShadow: '0 4px 16px rgba(0,0,0,0.15)', padding: 16, cursor: 'pointer', zIndex: 5,
+    backgroundColor: '#fff', borderRadius: 20,
+    boxShadow: 'rgba(0,0,0,0.02) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 6px, rgba(0,0,0,0.1) 0px 4px 8px',
+    padding: 16, cursor: 'pointer', zIndex: 5,
   },
   miniCardContent: { display: 'flex', alignItems: 'center', gap: 12 },
-  emoji: { fontSize: 32, flexShrink: 0 }, // kept for reference; IndustryIcon now handles sizing
   miniCardInfo: { flex: 1, minWidth: 0 },
-  storeName: { fontSize: 16, fontWeight: 700, color: '#1a1a1a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
-  industryType: { fontSize: 13, color: '#1a73e8', marginTop: 2 },
-  address: { fontSize: 13, color: '#888', marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
-  distance: { fontSize: 14, fontWeight: 600, color: '#1a73e8', flexShrink: 0, whiteSpace: 'nowrap' },
+  storeName: { fontSize: 16, fontWeight: 600, color: '#222222', letterSpacing: '-0.2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
+  industryType: { fontSize: 14, color: '#6a6a6a', marginTop: 2, fontWeight: 400 },
+  address: { fontSize: 14, color: '#6a6a6a', marginTop: 2, fontWeight: 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
+  distance: { fontSize: 14, fontWeight: 500, color: '#222222', flexShrink: 0, whiteSpace: 'nowrap' },
 };

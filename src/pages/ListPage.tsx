@@ -85,34 +85,35 @@ const ListPage: React.FC<ListPageProps> = ({
   const totalCount = stores.length.toLocaleString();
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#ffffff' }}>
       {/* Top bar */}
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '12px 16px',
-          borderBottom: '1px solid #eee',
+          padding: '14px 16px',
+          borderBottom: '1px solid #ebebeb',
           backgroundColor: '#fff',
           flexShrink: 0,
         }}
       >
-        <span style={{ fontSize: 14, fontWeight: 'bold', color: '#333' }}>
-          총 {totalCount}건
+        <span style={{ fontSize: 14, fontWeight: 600, color: '#222222' }}>
+          {totalCount}건
         </span>
         <select
           value={sortType}
           onChange={(e) => setSortType(e.target.value as SortType)}
           style={{
             fontSize: 13,
-            padding: '4px 8px',
-            border: '1px solid #ddd',
-            borderRadius: 6,
+            padding: '6px 10px',
+            border: '1px solid #dddddd',
+            borderRadius: 8,
             backgroundColor: '#fff',
-            color: '#555',
+            color: '#222222',
             cursor: 'pointer',
             outline: 'none',
+            fontWeight: 500,
           }}
         >
           {userLocation && <option value="distance">거리순</option>}
@@ -127,10 +128,11 @@ const ListPage: React.FC<ListPageProps> = ({
         style={{
           flex: 1,
           overflowY: 'auto',
-          padding: '8px 16px',
+          padding: '12px 16px',
           display: 'flex',
           flexDirection: 'column',
-          gap: 8,
+          gap: 16,
+          backgroundColor: '#f7f7f7',
         }}
       >
         {loading ? (
@@ -146,13 +148,12 @@ const ListPage: React.FC<ListPageProps> = ({
               style={{
                 width: 32,
                 height: 32,
-                border: '3px solid #e8e8e8',
-                borderTop: '3px solid #1a73e8',
+                border: '3px solid #ebebeb',
+                borderTop: '3px solid #ff385c',
                 borderRadius: '50%',
                 animation: 'spin 0.8s linear infinite',
               }}
             />
-            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
           </div>
         ) : stores.length === 0 ? (
           <div
@@ -162,11 +163,19 @@ const ListPage: React.FC<ListPageProps> = ({
               alignItems: 'center',
               justifyContent: 'center',
               padding: '60px 20px',
-              color: '#999',
+              color: '#6a6a6a',
             }}
           >
-            <span style={{ fontSize: 40, marginBottom: 12 }}>&#128269;</span>
-            <span style={{ fontSize: 14 }}>검색 결과가 없습니다</span>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#b0b0b0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 16 }}>
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <span style={{ fontSize: 16, fontWeight: 600, color: '#222222', marginBottom: 4 }}>
+              검색 결과가 없습니다
+            </span>
+            <span style={{ fontSize: 14, color: '#6a6a6a' }}>
+              다른 검색어나 필터를 시도해보세요
+            </span>
           </div>
         ) : (
           <>
@@ -191,8 +200,9 @@ const ListPage: React.FC<ListPageProps> = ({
                 style={{
                   textAlign: 'center',
                   padding: '16px 0',
-                  color: '#999',
+                  color: '#6a6a6a',
                   fontSize: 13,
+                  fontWeight: 500,
                 }}
               >
                 스크롤하여 더 보기...

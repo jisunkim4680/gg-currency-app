@@ -34,8 +34,8 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
       <div
         style={{
           backgroundColor: '#ffffff',
-          borderTopLeftRadius: 16,
-          borderTopRightRadius: 16,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
           width: '100%',
           maxWidth: 480,
           maxHeight: '80vh',
@@ -57,7 +57,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
               width: 36,
               height: 4,
               borderRadius: 2,
-              backgroundColor: '#d0d0d0',
+              backgroundColor: '#c1c1c1',
             }}
           />
         </div>
@@ -65,17 +65,18 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         {/* Title */}
         <div
           style={{
-            padding: '8px 20px 12px 20px',
-            fontSize: 16,
-            fontWeight: 'bold',
-            color: '#333',
+            padding: '8px 24px 16px 24px',
+            fontSize: 18,
+            fontWeight: 600,
+            color: '#222222',
+            letterSpacing: '-0.2px',
           }}
         >
           {title}
         </div>
 
         {/* Content */}
-        <div style={{ padding: '0 20px 24px 20px' }}>{children}</div>
+        <div style={{ padding: '0 24px 24px 24px' }}>{children}</div>
       </div>
     </div>
   );

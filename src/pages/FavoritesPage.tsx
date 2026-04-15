@@ -91,15 +91,15 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
   if (selectedFolder) {
     const items = selectedFolderItems;
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#f7f7f7' }}>
         {/* Header */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
-            padding: '16px 20px',
+            padding: '16px 24px',
             backgroundColor: '#fff',
-            borderBottom: '1px solid #e0e0e0',
+            borderBottom: '1px solid #ebebeb',
             gap: 12,
           }}
         >
@@ -108,19 +108,22 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
             style={{
               background: 'none',
               border: 'none',
-              fontSize: 20,
               cursor: 'pointer',
               padding: 0,
-              color: '#333',
+              color: '#222222',
+              display: 'flex',
+              alignItems: 'center',
             }}
           >
-            ←
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
           </button>
           <span style={{ fontSize: 20 }}>{selectedFolder.emoji}</span>
-          <span style={{ fontWeight: 'bold', fontSize: 16, color: '#333' }}>
+          <span style={{ fontWeight: 600, fontSize: 18, color: '#222222', letterSpacing: '-0.2px' }}>
             {selectedFolder.name}
           </span>
-          <span style={{ fontSize: 13, color: '#888' }}>{items.length}개</span>
+          <span style={{ fontSize: 14, color: '#6a6a6a', fontWeight: 400 }}>{items.length}개</span>
         </div>
 
         {/* Items list */}
@@ -130,7 +133,7 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
               style={{
                 textAlign: 'center',
                 padding: '48px 20px',
-                color: '#999',
+                color: '#6a6a6a',
                 fontSize: 14,
               }}
             >
@@ -142,13 +145,13 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                 key={item.franchiseNo}
                 style={{
                   backgroundColor: '#fff',
-                  borderRadius: 12,
-                  padding: '14px 16px',
-                  marginBottom: 10,
+                  borderRadius: 20,
+                  padding: '16px 16px',
+                  marginBottom: 12,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                  boxShadow: 'rgba(0,0,0,0.02) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 6px, rgba(0,0,0,0.1) 0px 4px 8px',
                   cursor: 'pointer',
                   position: 'relative',
                 }}
@@ -171,20 +174,21 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                 }
               >
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 'bold', fontSize: 14, color: '#333' }}>
+                  <div style={{ fontWeight: 600, fontSize: 16, color: '#222222', letterSpacing: '-0.2px' }}>
                     {item.storeName}
                   </div>
-                  <div style={{ fontSize: 12, color: '#1a73e8', marginTop: 2 }}>
+                  <div style={{ fontSize: 14, color: '#6a6a6a', marginTop: 4, fontWeight: 400 }}>
                     {item.industryName}
                   </div>
                   <div
                     style={{
-                      fontSize: 12,
-                      color: '#888',
+                      fontSize: 14,
+                      color: '#6a6a6a',
                       marginTop: 2,
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
+                      fontWeight: 400,
                     }}
                   >
                     {item.roadAddress}
@@ -200,23 +204,28 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                   style={{
                     background: 'none',
                     border: 'none',
-                    fontSize: 18,
                     cursor: 'pointer',
                     padding: '4px 8px',
-                    color: '#999',
+                    color: '#6a6a6a',
+                    display: 'flex',
+                    alignItems: 'center',
                   }}
                 >
-                  ⋮
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#6a6a6a">
+                    <circle cx="12" cy="5" r="2" />
+                    <circle cx="12" cy="12" r="2" />
+                    <circle cx="12" cy="19" r="2" />
+                  </svg>
                 </button>
                 {openMenuItemId === item.franchiseNo && (
                   <div
                     style={{
                       position: 'absolute',
                       right: 12,
-                      top: 44,
+                      top: 48,
                       backgroundColor: '#fff',
-                      borderRadius: 8,
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                      borderRadius: 12,
+                      boxShadow: 'rgba(0,0,0,0.02) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 6px, rgba(0,0,0,0.1) 0px 4px 8px',
                       zIndex: 10,
                       overflow: 'hidden',
                     }}
@@ -230,13 +239,14 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                       style={{
                         display: 'block',
                         width: '100%',
-                        padding: '10px 24px',
+                        padding: '12px 24px',
                         border: 'none',
                         background: 'none',
                         fontSize: 14,
-                        color: '#e53935',
+                        color: '#c13515',
                         cursor: 'pointer',
                         textAlign: 'left',
+                        fontWeight: 500,
                       }}
                     >
                       삭제
@@ -255,17 +265,27 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
               onClick={() => onViewOnMap(items)}
               style={{
                 width: '100%',
-                padding: '14px 0',
-                backgroundColor: '#1a73e8',
+                padding: '16px 0',
+                backgroundColor: '#222222',
                 color: '#fff',
                 border: 'none',
-                borderRadius: 12,
+                borderRadius: 8,
                 fontSize: 15,
-                fontWeight: 'bold',
+                fontWeight: 600,
                 cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+                letterSpacing: '-0.1px',
               }}
             >
-              🗺️ 이 폴더 가맹점 지도에서 보기
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z" />
+                <line x1="8" y1="2" x2="8" y2="18" />
+                <line x1="16" y1="6" x2="16" y2="22" />
+              </svg>
+              이 폴더 가맹점 지도에서 보기
             </button>
           </div>
         )}
@@ -275,31 +295,34 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
 
   // ── Main Folder List View ──
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#f7f7f7' }}>
       {/* Header */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '16px 20px',
-          backgroundColor: '#fff',
-          borderBottom: '1px solid #e0e0e0',
+          padding: '16px 24px',
+          backgroundColor: isEditMode ? '#fff8e1' : '#fff',
+          borderBottom: '1px solid #ebebeb',
+          transition: 'background-color 0.2s ease',
         }}
       >
-        <h2 style={{ margin: 0, fontSize: 18, color: '#333' }}>⭐ 즐겨찾기</h2>
+        <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#222222', letterSpacing: '-0.4px' }}>
+          즐겨찾기
+        </h2>
         <div style={{ display: 'flex', gap: 8 }}>
           {!isEditMode && (
             <button
               onClick={openCreateModal}
               style={{
-                padding: '6px 14px',
-                backgroundColor: '#1a73e8',
+                padding: '8px 16px',
+                backgroundColor: '#ff385c',
                 color: '#fff',
                 border: 'none',
                 borderRadius: 8,
                 fontSize: 13,
-                fontWeight: 'bold',
+                fontWeight: 600,
                 cursor: 'pointer',
               }}
             >
@@ -309,17 +332,17 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
           <button
             onClick={() => setIsEditMode(!isEditMode)}
             style={{
-              padding: '6px 14px',
-              backgroundColor: isEditMode ? '#333' : '#f0f0f0',
-              color: isEditMode ? '#fff' : '#333',
+              padding: '8px 16px',
+              backgroundColor: isEditMode ? '#222222' : '#f2f2f2',
+              color: isEditMode ? '#fff' : '#222222',
               border: 'none',
               borderRadius: 8,
               fontSize: 13,
-              fontWeight: 'bold',
+              fontWeight: 600,
               cursor: 'pointer',
             }}
           >
-            {isEditMode ? '완료' : '✏️ 편집'}
+            {isEditMode ? '완료' : '편집'}
           </button>
         </div>
       </div>
@@ -335,42 +358,42 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
               key={folder.id}
               style={{
                 backgroundColor: '#fff',
-                borderRadius: 12,
-                padding: '14px 16px',
-                marginBottom: 10,
+                borderRadius: 20,
+                padding: '16px 16px',
+                marginBottom: 12,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
-                border: isDefault ? '2px solid #1a73e8' : '1px solid #eee',
+                boxShadow: 'rgba(0,0,0,0.02) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 6px, rgba(0,0,0,0.1) 0px 4px 8px',
+                border: isDefault ? '2px solid #ff385c' : '1px solid transparent',
                 cursor: isEditMode ? 'default' : 'pointer',
+                transition: 'box-shadow 0.2s ease',
               }}
               onClick={() => {
                 if (!isEditMode) setSelectedFolderId(folder.id);
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1 }}>
-                <span style={{ fontSize: 22 }}>{folder.emoji}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1 }}>
+                <span style={{ fontSize: 24 }}>{folder.emoji}</span>
                 <div>
-                  <div style={{ fontWeight: 'bold', fontSize: 14, color: '#333' }}>
+                  <div style={{ fontWeight: 600, fontSize: 16, color: '#222222', letterSpacing: '-0.2px', display: 'flex', alignItems: 'center', gap: 8 }}>
                     {folder.name}
                     {isDefault && (
                       <span
                         style={{
-                          marginLeft: 8,
                           fontSize: 11,
-                          backgroundColor: '#e3f2fd',
-                          color: '#1a73e8',
+                          backgroundColor: '#fff0f3',
+                          color: '#ff385c',
                           padding: '2px 8px',
-                          borderRadius: 4,
-                          fontWeight: 'normal',
+                          borderRadius: 14,
+                          fontWeight: 500,
                         }}
                       >
                         기본
                       </span>
                     )}
                   </div>
-                  <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>
+                  <div style={{ fontSize: 14, color: '#6a6a6a', marginTop: 4, fontWeight: 400 }}>
                     {itemCount}개
                   </div>
                 </div>
@@ -380,7 +403,10 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
               {isEditMode && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   {isDefault ? (
-                    <span style={{ fontSize: 16, color: '#999' }}>🔒</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b0b0b0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
                   ) : (
                     <>
                       <button
@@ -391,15 +417,17 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                         style={{
                           background: 'none',
                           border: 'none',
-                          fontSize: 16,
                           cursor: 'pointer',
                           padding: '4px',
-                          color: index <= 1 ? '#ccc' : '#666',
+                          display: 'flex',
+                          alignItems: 'center',
                         }}
                         disabled={index <= 1}
                         title="위로 이동"
                       >
-                        ▲
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={index <= 1 ? '#dddddd' : '#222222'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="18 15 12 9 6 15" />
+                        </svg>
                       </button>
                       <button
                         onClick={(e) => {
@@ -409,15 +437,17 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                         style={{
                           background: 'none',
                           border: 'none',
-                          fontSize: 16,
                           cursor: 'pointer',
                           padding: '4px',
-                          color: index >= sortedFolders.length - 1 ? '#ccc' : '#666',
+                          display: 'flex',
+                          alignItems: 'center',
                         }}
                         disabled={index >= sortedFolders.length - 1}
                         title="아래로 이동"
                       >
-                        ▼
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={index >= sortedFolders.length - 1 ? '#dddddd' : '#222222'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
                       </button>
                       <button
                         onClick={(e) => {
@@ -427,13 +457,17 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                         style={{
                           background: 'none',
                           border: 'none',
-                          fontSize: 16,
                           cursor: 'pointer',
                           padding: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
                         }}
                         title="수정"
                       >
-                        ✏️
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
                       </button>
                       <button
                         onClick={(e) => {
@@ -443,13 +477,17 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                         style={{
                           background: 'none',
                           border: 'none',
-                          fontSize: 16,
                           cursor: 'pointer',
                           padding: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
                         }}
                         title="삭제"
                       >
-                        🗑️
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c13515" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="3 6 5 6 21 6" />
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                        </svg>
                       </button>
                     </>
                   )}
@@ -480,7 +518,7 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
           <div
             style={{
               backgroundColor: '#fff',
-              borderRadius: 16,
+              borderRadius: 20,
               padding: '24px',
               width: '85%',
               maxWidth: 340,
@@ -488,10 +526,10 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ fontSize: 15, fontWeight: 'bold', marginBottom: 12, color: '#333' }}>
+            <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 12, color: '#222222', letterSpacing: '-0.2px' }}>
               폴더를 삭제할까요?
             </div>
-            <div style={{ fontSize: 13, color: '#666', marginBottom: 20, lineHeight: 1.5 }}>
+            <div style={{ fontSize: 14, color: '#6a6a6a', marginBottom: 24, lineHeight: 1.6 }}>
               폴더만 삭제됩니다. 가맹점은 전체 폴더에 그대로 남아있어요.
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
@@ -499,13 +537,13 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                 onClick={() => setShowDeleteConfirm(null)}
                 style={{
                   flex: 1,
-                  padding: '12px 0',
-                  backgroundColor: '#f0f0f0',
-                  color: '#333',
+                  padding: '14px 0',
+                  backgroundColor: '#f2f2f2',
+                  color: '#222222',
                   border: 'none',
-                  borderRadius: 10,
+                  borderRadius: 8,
                   fontSize: 14,
-                  fontWeight: 'bold',
+                  fontWeight: 600,
                   cursor: 'pointer',
                 }}
               >
@@ -515,13 +553,13 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                 onClick={() => handleDeleteFolder(showDeleteConfirm)}
                 style={{
                   flex: 1,
-                  padding: '12px 0',
-                  backgroundColor: '#e53935',
+                  padding: '14px 0',
+                  backgroundColor: '#c13515',
                   color: '#fff',
                   border: 'none',
-                  borderRadius: 10,
+                  borderRadius: 8,
                   fontSize: 14,
-                  fontWeight: 'bold',
+                  fontWeight: 600,
                   cursor: 'pointer',
                 }}
               >
@@ -552,19 +590,19 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
           <div
             style={{
               backgroundColor: '#fff',
-              borderRadius: 16,
+              borderRadius: 20,
               padding: '24px',
               width: '85%',
               maxWidth: 360,
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 16, color: '#333' }}>
+            <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 20, color: '#222222', letterSpacing: '-0.2px' }}>
               {editingFolder ? '폴더 수정' : '새 폴더 만들기'}
             </div>
 
             {/* Selected emoji preview */}
-            <div style={{ textAlign: 'center', fontSize: 40, marginBottom: 12 }}>
+            <div style={{ textAlign: 'center', fontSize: 40, marginBottom: 16 }}>
               {modalEmoji}
             </div>
 
@@ -576,14 +614,14 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                   onClick={() => setModalEmojiCategory(category)}
                   style={{
                     flex: 1,
-                    padding: '6px 0',
+                    padding: '8px 0',
                     backgroundColor:
-                      modalEmojiCategory === category ? '#1a73e8' : '#f0f0f0',
-                    color: modalEmojiCategory === category ? '#fff' : '#666',
+                      modalEmojiCategory === category ? '#222222' : '#f2f2f2',
+                    color: modalEmojiCategory === category ? '#fff' : '#6a6a6a',
                     border: 'none',
                     borderRadius: 8,
                     fontSize: 13,
-                    fontWeight: 'bold',
+                    fontWeight: 600,
                     cursor: 'pointer',
                   }}
                 >
@@ -609,9 +647,9 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                     fontSize: 24,
                     padding: '8px 0',
                     border:
-                      modalEmoji === emoji ? '2px solid #1a73e8' : '2px solid transparent',
+                      modalEmoji === emoji ? '2px solid #222222' : '2px solid transparent',
                     borderRadius: 8,
-                    backgroundColor: modalEmoji === emoji ? '#e3f2fd' : '#fafafa',
+                    backgroundColor: modalEmoji === emoji ? '#f7f7f7' : '#fafafa',
                     cursor: 'pointer',
                   }}
                 >
@@ -629,13 +667,14 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
               maxLength={20}
               style={{
                 width: '100%',
-                padding: '12px 14px',
-                border: '1px solid #ddd',
-                borderRadius: 10,
+                padding: '14px 16px',
+                border: '1px solid #dddddd',
+                borderRadius: 8,
                 fontSize: 14,
                 outline: 'none',
                 boxSizing: 'border-box',
-                marginBottom: 16,
+                marginBottom: 20,
+                color: '#222222',
               }}
             />
 
@@ -645,13 +684,13 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                 onClick={() => setShowFolderModal(false)}
                 style={{
                   flex: 1,
-                  padding: '12px 0',
-                  backgroundColor: '#f0f0f0',
-                  color: '#333',
+                  padding: '14px 0',
+                  backgroundColor: '#f2f2f2',
+                  color: '#222222',
                   border: 'none',
-                  borderRadius: 10,
+                  borderRadius: 8,
                   fontSize: 14,
-                  fontWeight: 'bold',
+                  fontWeight: 600,
                   cursor: 'pointer',
                 }}
               >
@@ -662,13 +701,13 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                 disabled={!modalName.trim()}
                 style={{
                   flex: 1,
-                  padding: '12px 0',
-                  backgroundColor: modalName.trim() ? '#1a73e8' : '#ccc',
+                  padding: '14px 0',
+                  backgroundColor: modalName.trim() ? '#ff385c' : 'rgba(0,0,0,0.24)',
                   color: '#fff',
                   border: 'none',
-                  borderRadius: 10,
+                  borderRadius: 8,
                   fontSize: 14,
-                  fontWeight: 'bold',
+                  fontWeight: 600,
                   cursor: modalName.trim() ? 'pointer' : 'default',
                 }}
               >
