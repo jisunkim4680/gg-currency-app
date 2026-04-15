@@ -46,13 +46,14 @@ function App() {
       });
     }
 
-    // 3. 검색어 필터
+    // 3. 검색어 필터 (가맹점명 + 업종 + 도로명주소 + 지번주소)
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       result = result.filter((store) =>
         store.storeName.toLowerCase().includes(q) ||
         store.industryName.toLowerCase().includes(q) ||
-        store.roadAddress.toLowerCase().includes(q)
+        store.roadAddress.toLowerCase().includes(q) ||
+        store.lotAddress.toLowerCase().includes(q)
       );
     }
 
