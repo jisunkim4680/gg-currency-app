@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Store, DataSource } from '../types/store';
 import { getStores } from '../services/storeService';
 
@@ -16,31 +16,32 @@ export function useStores(sigunName: string): UseStoresResult {
   useEffect(() => {
     let cancelled = false;
 
-    async function fetchStores() {
+    async function load() {
       setLoading(true);
+      setStores([]);
       try {
-        const result = await getStores(sigunName);
+        const result = await getStores(sigunName, (partialStores, done) => {
+          if (!cancelled) {
+            setStores(partialStores);
+            if (done) setLoading(false);
+          }
+        });
         if (!cancelled) {
           setStores(result.stores);
           setDataSource(result.source);
+          setLoading(false);
         }
       } catch (error) {
         console.error('Failed to fetch stores:', error);
         if (!cancelled) {
           setStores([]);
-        }
-      } finally {
-        if (!cancelled) {
           setLoading(false);
         }
       }
     }
 
-    fetchStores();
-
-    return () => {
-      cancelled = true;
-    };
+    load();
+    return () => { cancelled = true; };
   }, [sigunName]);
 
   return { stores, dataSource, loading };
