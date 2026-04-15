@@ -21,8 +21,12 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
   const storesRef = useRef<Store[]>(stores);
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [visibleCount, setVisibleCount] = useState(0);
+  const [isOutOfBounds, setIsOutOfBounds] = useState(false);
   const updateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prevStoresLenRef = useRef(0);
+
+  // 경기도 대략적 범위
+  const GG_BOUNDS = { minLat: 36.9, maxLat: 38.3, minLng: 126.3, maxLng: 127.9 };
 
   storesRef.current = stores;
 
@@ -46,6 +50,14 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
 
     const toShow = visible.slice(0, MAX_MARKERS);
     setVisibleCount(visible.length);
+
+    // 경기도 밖인지 확인
+    const center = map.getCenter();
+    const centerLat = center.getLat();
+    const centerLng = center.getLng();
+    const outOfGG = centerLat < GG_BOUNDS.minLat || centerLat > GG_BOUNDS.maxLat ||
+                    centerLng < GG_BOUNDS.minLng || centerLng > GG_BOUNDS.maxLng;
+    setIsOutOfBounds(outOfGG);
 
     const newMarkers = toShow.map((store) => {
       const marker = new kakao.maps.Marker({
@@ -150,7 +162,10 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
             {stores.length > visibleCount && ` (전체 ${stores.length.toLocaleString()}개)`}
           </span>
         )}
-        {stores.length > 0 && visibleCount === 0 && !loading && (
+        {isOutOfBounds && !loading && (
+          <span>📍 경기도 밖입니다 · 지역 필터를 선택해주세요</span>
+        )}
+        {!isOutOfBounds && stores.length > 0 && visibleCount === 0 && !loading && (
           <span>📍 현재 화면에 가맹점이 없습니다 · 지도를 이동하거나 필터를 변경해보세요</span>
         )}
         {stores.length === 0 && !loading && (
