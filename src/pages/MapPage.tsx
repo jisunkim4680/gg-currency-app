@@ -166,7 +166,7 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
           <span>📍 경기도 밖입니다 · 지역 필터를 선택해주세요</span>
         )}
         {!isOutOfBounds && stores.length > 0 && visibleCount === 0 && !loading && (
-          <span>📍 현재 화면에 가맹점이 없습니다 · 지도를 이동하거나 필터를 변경해보세요</span>
+          <span>📍 조건에 맞는 가맹점이 없습니다 · 지도를 이동하거나 필터를 변경해보세요</span>
         )}
         {stores.length === 0 && !loading && (
           <span>🔍 조건에 맞는 가맹점이 없습니다</span>
