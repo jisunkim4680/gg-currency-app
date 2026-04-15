@@ -142,7 +142,7 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
       )}
 
       <div style={styles.infoBar}>
-        {stores.length > 0 && (
+        {stores.length > 0 && visibleCount > 0 && (
           <span>
             📍 {visibleCount > MAX_MARKERS
               ? `${MAX_MARKERS}/${visibleCount.toLocaleString()}개 표시`
@@ -150,7 +150,13 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
             {stores.length > visibleCount && ` (전체 ${stores.length.toLocaleString()}개)`}
           </span>
         )}
-        {loading && <span> · 로딩 중...</span>}
+        {stores.length > 0 && visibleCount === 0 && !loading && (
+          <span>📍 현재 화면에 가맹점이 없습니다 · 지도를 이동하거나 필터를 변경해보세요</span>
+        )}
+        {stores.length === 0 && !loading && (
+          <span>🔍 조건에 맞는 가맹점이 없습니다</span>
+        )}
+        {loading && <span>⏳ 로딩 중...</span>}
       </div>
 
       {userLocation && (
