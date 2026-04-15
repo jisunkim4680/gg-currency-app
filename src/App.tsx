@@ -18,7 +18,7 @@ export type TabType = 'map' | 'list' | 'favorites';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('map');
-  const [selectedSigun, setSelectedSigun] = useState<string>('수원시');
+  const [selectedSigun, setSelectedSigun] = useState<string>('성남시');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedGu, setSelectedGu] = useState<string | null>(null);
   const [selectedDong, setSelectedDong] = useState<string | null>(null);
