@@ -34,13 +34,14 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
       <div
         style={{
           backgroundColor: '#ffffff',
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
+          borderTopLeftRadius: 16,
+          borderTopRightRadius: 16,
           width: '100%',
           maxWidth: 480,
           maxHeight: '80vh',
           overflowY: 'auto',
           animation: 'slideUp 0.3s ease-out',
+          boxShadow: '0 -2px 10px rgba(0,0,0,0.1)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -54,10 +55,10 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         >
           <div
             style={{
-              width: 36,
-              height: 4,
-              borderRadius: 2,
-              backgroundColor: '#c1c1c1',
+              width: 32,
+              height: 3,
+              borderRadius: 1.5,
+              backgroundColor: '#e5e5e5',
             }}
           />
         </div>
@@ -65,10 +66,10 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         {/* Title */}
         <div
           style={{
-            padding: '8px 24px 16px 24px',
+            padding: '8px 20px 16px 20px',
             fontSize: 18,
-            fontWeight: 600,
-            color: '#222222',
+            fontWeight: 700,
+            color: '#1e1e1e',
             letterSpacing: '-0.2px',
           }}
         >
@@ -76,7 +77,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         </div>
 
         {/* Content */}
-        <div style={{ padding: '0 24px 24px 24px' }}>{children}</div>
+        <div style={{ padding: '0 20px 24px 20px' }}>{children}</div>
       </div>
     </div>
   );

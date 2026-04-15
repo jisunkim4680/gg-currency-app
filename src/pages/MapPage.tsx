@@ -177,7 +177,7 @@ export default function MapPage({ stores, userLocation, onStoreSelect, loading }
 
       {userLocation && (
         <button style={styles.locationButton} onClick={handleCenterOnUser} aria-label="내 위치로 이동">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1e1e1e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="3" />
             <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
           </svg>
@@ -215,30 +215,30 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     backgroundColor: 'rgba(255,255,255,0.6)', zIndex: 10, pointerEvents: 'none',
   },
-  spinner: { width: 40, height: 40, border: '4px solid #ebebeb', borderTopColor: '#ff385c', borderRadius: '50%', animation: 'spin 0.8s linear infinite' },
+  spinner: { width: 40, height: 40, border: '4px solid #e5e5e5', borderTopColor: '#03C75A', borderRadius: '50%', animation: 'spin 0.8s linear infinite' },
   infoBar: {
     position: 'absolute', top: 8, left: 8, right: 8,
-    backgroundColor: 'rgba(255,255,255,0.95)', borderRadius: 20,
-    padding: '8px 16px', fontSize: 13, color: '#222222', fontWeight: 500,
-    zIndex: 5, boxShadow: 'rgba(0,0,0,0.02) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 6px, rgba(0,0,0,0.1) 0px 4px 8px',
+    backgroundColor: 'rgba(255,255,255,0.95)', borderRadius: 8,
+    padding: '8px 16px', fontSize: 13, color: '#1e1e1e', fontWeight: 500,
+    zIndex: 5, border: '1px solid #e5e5e5', boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
   },
   locationButton: {
-    position: 'absolute', bottom: 150, right: 16, width: 48, height: 48,
-    borderRadius: '50%', backgroundColor: '#fff', border: 'none',
-    boxShadow: 'rgba(0,0,0,0.02) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 6px, rgba(0,0,0,0.1) 0px 4px 8px',
+    position: 'absolute', bottom: 150, right: 16, width: 44, height: 44,
+    borderRadius: '50%', backgroundColor: '#fff', border: '1px solid #e5e5e5',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
     cursor: 'pointer',
     display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 5,
   },
   miniCard: {
     position: 'absolute', bottom: 70, left: 16, right: 16,
-    backgroundColor: '#fff', borderRadius: 20,
-    boxShadow: 'rgba(0,0,0,0.02) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 6px, rgba(0,0,0,0.1) 0px 4px 8px',
+    backgroundColor: '#fff', borderRadius: 12,
+    border: '1px solid #e5e5e5', boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
     padding: 16, cursor: 'pointer', zIndex: 5,
   },
   miniCardContent: { display: 'flex', alignItems: 'center', gap: 12 },
   miniCardInfo: { flex: 1, minWidth: 0 },
-  storeName: { fontSize: 16, fontWeight: 600, color: '#222222', letterSpacing: '-0.2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
-  industryType: { fontSize: 14, color: '#6a6a6a', marginTop: 2, fontWeight: 400 },
-  address: { fontSize: 14, color: '#6a6a6a', marginTop: 2, fontWeight: 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
-  distance: { fontSize: 14, fontWeight: 500, color: '#222222', flexShrink: 0, whiteSpace: 'nowrap' },
+  storeName: { fontSize: 15, fontWeight: 600, color: '#1e1e1e', letterSpacing: '-0.2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
+  industryType: { fontSize: 13, color: '#808080', marginTop: 2, fontWeight: 400 },
+  address: { fontSize: 13, color: '#808080', marginTop: 2, fontWeight: 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
+  distance: { fontSize: 13, fontWeight: 500, color: '#1e1e1e', flexShrink: 0, whiteSpace: 'nowrap' },
 };

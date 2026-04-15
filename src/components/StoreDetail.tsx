@@ -62,7 +62,7 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
 
   return (
     <BottomSheet isOpen={true} onClose={onClose} title={store.storeName}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {/* Store header with emoji and favorite */}
         <div
           style={{
@@ -77,12 +77,12 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
             </span>
             <span
               style={{
-                fontSize: 14,
-                color: '#222222',
+                fontSize: 13,
+                color: '#03C75A',
                 fontWeight: 500,
-                backgroundColor: '#f2f2f2',
-                padding: '6px 12px',
-                borderRadius: 14,
+                backgroundColor: '#e8f8ef',
+                padding: '4px 10px',
+                borderRadius: 20,
               }}
             >
               {store.industryName}
@@ -106,8 +106,8 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
               width="28"
               height="28"
               viewBox="0 0 24 24"
-              fill={isFavorite ? '#ff385c' : 'none'}
-              stroke={isFavorite ? '#ff385c' : '#222222'}
+              fill={isFavorite ? '#ff3b30' : 'none'}
+              stroke={isFavorite ? '#ff3b30' : '#b2b2b2'}
               strokeWidth="1.8"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -117,12 +117,12 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
           </button>
         </div>
 
-        {/* Detail info rows */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {/* Detail info rows with thin dividers */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
           {store.roadAddress && (
             <DetailRow
               icon={
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#808080" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                   <circle cx="12" cy="10" r="3" />
                 </svg>
@@ -134,7 +134,7 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
           {store.lotAddress && (
             <DetailRow
               icon={
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#808080" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
                   <line x1="3" y1="9" x2="21" y2="9" />
                   <line x1="9" y1="21" x2="9" y2="9" />
@@ -147,7 +147,7 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
           {store.zipCode && (
             <DetailRow
               icon={
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#808080" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="4" width="20" height="16" rx="2" />
                   <path d="M22 7l-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7" />
                 </svg>
@@ -159,7 +159,7 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
           {distance !== null && (
             <DetailRow
               icon={
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#808080" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10" />
                   <line x1="2" y1="12" x2="22" y2="12" />
                   <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
@@ -167,6 +167,7 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
               }
               label="거리"
               value={formatDistance(distance)}
+              isLast
             />
           )}
         </div>
@@ -182,7 +183,7 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
               justifyContent: 'center',
               gap: 8,
               padding: '14px 0',
-              backgroundColor: '#222222',
+              backgroundColor: '#03C75A',
               color: '#fff',
               border: 'none',
               borderRadius: 8,
@@ -206,9 +207,9 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
               justifyContent: 'center',
               gap: 8,
               padding: '14px 0',
-              backgroundColor: '#f2f2f2',
-              color: '#222222',
-              border: 'none',
+              backgroundColor: '#ffffff',
+              color: '#1e1e1e',
+              border: '1px solid #e5e5e5',
               borderRadius: 8,
               fontSize: 14,
               fontWeight: 600,
@@ -233,10 +234,10 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
             bottom: 100,
             left: '50%',
             transform: 'translateX(-50%)',
-            backgroundColor: '#222222',
+            backgroundColor: '#1e1e1e',
             color: '#fff',
             padding: '10px 24px',
-            borderRadius: 32,
+            borderRadius: 8,
             fontSize: 14,
             fontWeight: 500,
             zIndex: 4000,
@@ -250,18 +251,26 @@ const StoreDetail: React.FC<StoreDetailProps> = ({
   );
 };
 
-const DetailRow: React.FC<{ icon: React.ReactNode; label: string; value: string }> = ({
+const DetailRow: React.FC<{ icon: React.ReactNode; label: string; value: string; isLast?: boolean }> = ({
   icon,
   label,
   value,
+  isLast,
 }) => (
-  <div style={{ display: 'flex', gap: 10, fontSize: 14, alignItems: 'flex-start' }}>
+  <div style={{
+    display: 'flex',
+    gap: 10,
+    fontSize: 14,
+    alignItems: 'flex-start',
+    padding: '12px 0',
+    borderBottom: isLast ? 'none' : '1px solid #f0f0f0',
+  }}>
     <div style={{ flexShrink: 0, marginTop: 2 }}>{icon}</div>
     <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <span style={{ color: '#6a6a6a', fontSize: 12, fontWeight: 500 }}>
+      <span style={{ color: '#808080', fontSize: 12, fontWeight: 400 }}>
         {label}
       </span>
-      <span style={{ color: '#222222', wordBreak: 'break-all', fontWeight: 400 }}>{value}</span>
+      <span style={{ color: '#1e1e1e', wordBreak: 'break-all', fontWeight: 400 }}>{value}</span>
     </div>
   </div>
 );
