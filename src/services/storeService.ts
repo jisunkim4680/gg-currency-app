@@ -1,6 +1,6 @@
 import { Store, DataSource } from '../types/store';
 import { fetchStores } from './api';
-import { getCachedStores, setCachedStores } from './cache';
+import { getCachedStores, setCachedStores, isCacheValid } from './cache';
 
 interface StoreResult {
   stores: Store[];
@@ -9,57 +9,79 @@ interface StoreResult {
 
 export async function getStores(
   sigunName: string,
-  onProgress?: (stores: Store[], done: boolean) => void
+  onProgress?: (stores: Store[], source: DataSource) => void
 ): Promise<StoreResult> {
-  // 1. Try API first (점진적 로딩)
+
+  // 1. 캐시가 있으면 즉시 표시 (네트워크 대기 0초)
+  try {
+    const cached = await getCachedStores(sigunName);
+    if (cached && cached.length > 0) {
+      if (onProgress) onProgress(cached, 'cache');
+
+      // 캐시가 유효하면 그대로 사용, API 갱신 안 함
+      const valid = await isCacheValid(sigunName);
+      if (valid) {
+        return { stores: cached, source: 'cache' };
+      }
+
+      // 캐시가 만료됐으면 백그라운드에서 API 갱신
+      refreshFromApi(sigunName, onProgress);
+      return { stores: cached, source: 'cache' };
+    }
+  } catch {
+    // 캐시 실패 → 다음 단계
+  }
+
+  // 2. 캐시 없으면 API에서 첫 100건만 빠르게 로드
+  try {
+    const first = await fetchStores(sigunName, 1, 100);
+    if (onProgress) onProgress(first.stores, 'api');
+
+    // 나머지는 백그라운드로
+    refreshFromApi(sigunName, onProgress);
+    return { stores: first.stores, source: 'api' };
+  } catch {
+    // API도 실패
+  }
+
+  // 3. 정적 JSON
+  try {
+    const response = await fetch(`/data/${sigunName}.json`);
+    if (!response.ok) throw new Error('not found');
+    const stores: Store[] = await response.json();
+    return { stores, source: 'static' };
+  } catch {
+    return { stores: [], source: 'api' };
+  }
+}
+
+// 백그라운드에서 전체 데이터 로드 + 캐시 갱신
+async function refreshFromApi(
+  sigunName: string,
+  onProgress?: (stores: Store[], source: DataSource) => void
+) {
   try {
     const pageSize = 1000;
-    const firstPage = await fetchStores(sigunName, 1, pageSize);
-    const allStores: Store[] = [...firstPage.stores];
+    const first = await fetchStores(sigunName, 1, pageSize);
+    const allStores = [...first.stores];
+    const totalPages = Math.ceil(first.totalCount / pageSize);
 
-    // 첫 페이지를 즉시 표시
-    if (onProgress) onProgress(allStores, false);
+    if (onProgress) onProgress(allStores, 'api');
 
-    const totalPages = Math.ceil(firstPage.totalCount / pageSize);
-
-    // 나머지 페이지를 3개씩 병렬로 로드
+    // 3페이지씩 병렬 로드
     for (let i = 2; i <= totalPages; i += 3) {
       const batch = [];
       for (let j = i; j < i + 3 && j <= totalPages; j++) {
         batch.push(fetchStores(sigunName, j, pageSize));
       }
       const results = await Promise.all(batch);
-      for (const result of results) {
-        allStores.push(...result.stores);
-      }
-      if (onProgress) onProgress([...allStores], i + 3 > totalPages);
+      for (const r of results) allStores.push(...r.stores);
+      if (onProgress) onProgress([...allStores], 'api');
     }
 
-    // 캐시 저장 (백그라운드)
+    // 캐시 저장
     setCachedStores(sigunName, allStores).catch(() => {});
-    return { stores: allStores, source: 'api' };
-  } catch (apiError) {
-    console.warn('API fetch failed, trying cache:', apiError);
-  }
-
-  // 2. IndexedDB 캐시
-  try {
-    const stores = await getCachedStores(sigunName);
-    if (stores && stores.length > 0) {
-      return { stores, source: 'cache' };
-    }
-  } catch (cacheError) {
-    console.warn('Cache read failed, trying static data:', cacheError);
-  }
-
-  // 3. 정적 JSON
-  try {
-    const response = await fetch(`/data/${sigunName}.json`);
-    if (!response.ok) throw new Error(`Static file not found: ${response.status}`);
-    const stores: Store[] = await response.json();
-    return { stores, source: 'static' };
-  } catch (staticError) {
-    console.error('All data sources failed:', staticError);
-    throw new Error(`Failed to load store data for "${sigunName}"`);
+  } catch {
+    // 백그라운드 갱신 실패는 무시
   }
 }
